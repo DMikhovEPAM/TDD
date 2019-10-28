@@ -9,6 +9,8 @@ class Item {
 class Shop {
   constructor(items=[]){
     this.items = items;
+    this.dbConnection = undefined;
+    this.table = undefined;
   }
   updateQuality() {
     for (var i = 0; i < this.items.length; i++) {
