@@ -61,6 +61,14 @@ describe("Gilded Rose", function() {
     expect(items[0].quality).to.equal(0);
   })
 
+  it('Should not change Sulfuras quality and sell in date', function() {
+    const gildedRose = new Shop([ new Item("Sulfuras, Hand of Ragnaros", 1, 20) ]);
+    gildedRose.updateQuality();
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(20);
+    expect(items[0].sellIn).to.equal(1);
+  })
+
   it('Should "Conjured item" degrade twice faster', function() {
     const gildedRose = new Shop([ new Item("Conjured staff", 5, 10, true) ]);
     const items = gildedRose.updateQuality();
