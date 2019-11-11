@@ -2,10 +2,53 @@ var {expect} = require('chai');
 var {Shop, Item} = require('../src/gilded_rose.js');
 describe("Gilded Rose", function() {
 
-  it("should foo", function() {
-    const gildedRose = new Shop([ new Item("fixme", 0, 0) ]);
+
+  it("should be Test item title", function() {
+    const gildedRose = new Shop([ new Item("Test item", 0, 0) ]);
     const items = gildedRose.updateQuality();
-    expect(items[0].name).to.equal("fixme");
+    expect(items[0].name).to.equal("Test item");
   });
 
+
+  it("Quality should be degrade twice faster", function() {
+    const gildedRose = new Shop([ new Item("Test item", 0, 5) ]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(3);
+  });
+
+
+  it('Quality should be always pq:qositive', function() {
+    const gildedRose = new Shop([ new Item("Test item", 0, 1), new Item("Test item", 2, 1) ]);
+    gildedRose.updateQuality();
+    const items = gildedRose.updateQuality();
+
+
+    items.forEach(function(item) {
+      expect(item.quality).to.equal(0);
+    })
+  })
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
