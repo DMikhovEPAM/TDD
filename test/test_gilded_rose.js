@@ -17,7 +17,7 @@ describe("Gilded Rose", function() {
   });
 
 
-  it('Quality should be always pq:qositive', function() {
+  it('Quality should be always positive', function() {
     const gildedRose = new Shop([ new Item("Test item", 0, 1), new Item("Test item", 2, 1) ]);
     gildedRose.updateQuality();
     const items = gildedRose.updateQuality();
@@ -63,7 +63,7 @@ describe("Gilded Rose", function() {
     const gildedRose = new Shop([ new Item(Sulfuras, 1, 20) ]);
     gildedRose.updateQuality();
     const items = gildedRose.updateQuality();
-    expect(items[0].quality).to.equal(20);
+    expect(items[0].quality).to.equal(80);
     expect(items[0].sellIn).to.equal(1);
   })
 

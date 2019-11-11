@@ -14,7 +14,7 @@ class Item {
             this.quality=80
         }
 
-        this.isConjured = isConjured
+        this.isConjured = isConjured;
     }
 }
 
@@ -36,13 +36,13 @@ class Shop {
             }
             item[fieldToUpdate] -= qualityValueToChange
         }
-
-        if(item[fieldToUpdate] < 0) {
-            item[fieldToUpdate] = 0;
-        } else if (item[fieldToUpdate]>50) {
-            item[fieldToUpdate] = 50;
+        if (fieldToUpdate === 'quality') {
+            if(item[fieldToUpdate] < 0) {
+                item[fieldToUpdate] = 0;
+            } else if (item[fieldToUpdate]>50) {
+                item[fieldToUpdate] = 50;
+            }
         }
-
 
         if (this.table) {
             let updateQuery = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
@@ -62,58 +62,36 @@ class Shop {
 
 
     updateQuality() {
-        for (var i = 0; i < this.items.length; i++) {
-            if (this.items[i].name != Aged_Brie && this.items[i].name != Backstage) {
-                if (this.items[i].quality > 0) {
-                    if (this.items[i].name != Sulfuras) {
-                        this.updateItem(this.items[i], false);
-                    }
-                }
-            } else {
-                if (this.items[i].quality < 50) {
-                    this.updateItem(this.items[i]);
-
-
-                    if (this.items[i].name == Backstage) {
-                        if (this.items[i].sellIn < 11) {
-                            if (this.items[i].quality < 50) {
-                                this.updateItem(this.items[i]);
-                            }
-                        }
-                        if (this.items[i].sellIn < 6) {
-                            if (this.items[i].quality < 50) {
-                                this.updateItem(this.items[i]);
-                            }
-                        }
-                    }
-                }
+        this.items.forEach(item => {
+            let qualityValueToChange = 1;
+            if (item.name !== Sulfuras) {
+                this.updateItem(item, false, 1, 'sellIn');
             }
-            if (this.items[i].name != Sulfuras) {
-                this.updateItem(this.items[i], false, 'sellIn');
+            if (item.sellIn < 0) {
+                qualityValueToChange = 2
             }
-            if (this.items[i].sellIn < 0) {
-                if (this.items[i].name != Aged_Brie) {
-                    if (this.items[i].name != Backstage) {
-                        if (this.items[i].quality > 0) {
-                            if (this.items[i].name != Sulfuras) {
-                                this.updateItem(this.items[i], false);
-                            }
-                        }
-                    } else {
-                        this.items[i].quality = 0;
-                        this.updateItem(this.items[i], false);
-                    }
-                } else {
-                    if (this.items[i].quality < 50) {
-                        this.updateItem(this.items[i]);
-                    }
+            if ([Aged_Brie, Backstage, Sulfuras].indexOf(item.name) === -1) {
+                this.updateItem(item, false, qualityValueToChange);
+            } else if(item.name === Backstage) {
+                if (item.sellIn < 0) {
+                    qualityValueToChange = item.quality
+                } else if (item.sellIn < 6) {
+                    qualityValueToChange = 3
+                } else if (item.sellIn < 11) {
+                    qualityValueToChange = 2
                 }
+                // Increase value if item.sellIn >= 0 && drop it to 0 if item.sellIn < 0
+                this.updateItem(item, item.sellIn >= 0, qualityValueToChange);
+            } else if (item.name === Aged_Brie) {
+                this.updateItem(item, true, 1);
             }
-        }
+        })
 
 
         return this.items;
     }
+
+
 }
 module.exports = {
     Item,
