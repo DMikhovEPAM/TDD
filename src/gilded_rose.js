@@ -1,3 +1,9 @@
+const Aged_Brie = 'Aged Brie'
+const Backstage = 'Backstage passes to a TAFKAL80ETC concert'
+const Sulfuras = 'Sulfuras, Hand of Ragnaros'
+const Conjured = 'Conjured staff'
+
+
 class Item {
     constructor(name, sellIn, quality, isConjured = false){
         this.name = name;
@@ -104,5 +110,9 @@ class Shop {
 }
 module.exports = {
     Item,
-    Shop
+    Shop,
+    Aged_Brie,
+    Backstage,
+    Sulfuras,
+    Conjured,
 }
