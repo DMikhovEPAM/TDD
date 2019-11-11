@@ -1,8 +1,9 @@
 class Item {
-    constructor(name, sellIn, quality){
+    constructor(name, sellIn, quality, isConjured = false){
         this.name = name;
         this.sellIn = sellIn;
         this.quality = quality && typeof quality === 'number' && quality > 50 ? 50 : quality;
+        this.isConjured = isConjured
     }
 }
 
@@ -19,6 +20,10 @@ class Shop {
         if (isIncrease) {
             item[fieldToUpdate] += quantity
         } else {
+
+            if (item.isConjured && fieldToUpdate === 'quality'){
+                quantity *= 2
+            }
             item[fieldToUpdate] -= quantity
         }
 
