@@ -6,7 +6,6 @@ class Item {
     }
 }
 
-
 class Shop {
     constructor(items=[]){
         this.items = items;
@@ -14,10 +13,8 @@ class Shop {
         this.table = undefined;
     }
 
-
     updateItem(item, isIncrease = true, fieldToUpdate = 'quality') {
         let quantity = 1
-
 
         if (isIncrease) {
             item[fieldToUpdate] += quantity
@@ -25,17 +22,14 @@ class Shop {
             item[fieldToUpdate] -= quantity
         }
 
-
         if(item[fieldToUpdate] < 0 && fieldToUpdate === 'quality') {
             item[fieldToUpdate] = 0
         }
-
 
         if (this.table) {
             let updateQuery = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
             let query = this.dbConnection.format(updateQuery,
                 [this.table, "quality", item.quality, "name", item.name]);
-
 
             this.dbConnection.query(query,(err, response) => {
                 if(err) {
