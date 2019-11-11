@@ -9,6 +9,11 @@ class Item {
         this.name = name;
         this.sellIn = sellIn;
         this.quality = quality && typeof quality === 'number' && quality > 50 ? 50 : quality;
+
+        if(name===Sulfuras) {
+            this.quality=80
+        }
+
         this.isConjured = isConjured
     }
 }
@@ -20,22 +25,24 @@ class Shop {
         this.table = undefined;
     }
 
-    updateItem(item, isIncrease = true, fieldToUpdate = 'quality') {
-        let quantity = 1
+    updateItem(item, isIncrease = true, qualityValueToChange = 1, fieldToUpdate = 'quality') {
 
         if (isIncrease) {
-            item[fieldToUpdate] += quantity
+            item[fieldToUpdate] += qualityValueToChange
         } else {
 
             if (item.isConjured && fieldToUpdate === 'quality'){
-                quantity *= 2
+                qualityValueToChange *= 2
             }
-            item[fieldToUpdate] -= quantity
+            item[fieldToUpdate] -= qualityValueToChange
         }
 
-        if(item[fieldToUpdate] < 0 && fieldToUpdate === 'quality') {
-            item[fieldToUpdate] = 0
+        if(item[fieldToUpdate] < 0) {
+            item[fieldToUpdate] = 0;
+        } else if (item[fieldToUpdate]>50) {
+            item[fieldToUpdate] = 50;
         }
+
 
         if (this.table) {
             let updateQuery = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
@@ -56,9 +63,9 @@ class Shop {
 
     updateQuality() {
         for (var i = 0; i < this.items.length; i++) {
-            if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
+            if (this.items[i].name != Aged_Brie && this.items[i].name != Backstage) {
                 if (this.items[i].quality > 0) {
-                    if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+                    if (this.items[i].name != Sulfuras) {
                         this.updateItem(this.items[i], false);
                     }
                 }
@@ -67,7 +74,7 @@ class Shop {
                     this.updateItem(this.items[i]);
 
 
-                    if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
+                    if (this.items[i].name == Backstage) {
                         if (this.items[i].sellIn < 11) {
                             if (this.items[i].quality < 50) {
                                 this.updateItem(this.items[i]);
@@ -81,14 +88,14 @@ class Shop {
                     }
                 }
             }
-            if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+            if (this.items[i].name != Sulfuras) {
                 this.updateItem(this.items[i], false, 'sellIn');
             }
             if (this.items[i].sellIn < 0) {
-                if (this.items[i].name != 'Aged Brie') {
-                    if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
+                if (this.items[i].name != Aged_Brie) {
+                    if (this.items[i].name != Backstage) {
                         if (this.items[i].quality > 0) {
-                            if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+                            if (this.items[i].name != Sulfuras) {
                                 this.updateItem(this.items[i], false);
                             }
                         }
